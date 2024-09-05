@@ -5,12 +5,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.job4j.grabber.utils.DateTimeParser;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class HabrCareerParse {
+public class HabrCareerParse implements DateTimeParser {
 
     private static final String SOURCE_LINK = "https://career.habr.com";
     public static final String PREFIX = "/vacancies?page=";
@@ -27,12 +29,15 @@ public class HabrCareerParse {
             Element linkElement = titleElement.child(0);
             String vacancyName = titleElement.text();
             Element date = row.select(".vacancy-card__date").first();
-            Element vacancyDate = date.child(0);
-            String dateTime = OffsetDateTime.parse(
-                            vacancyDate.attr("datetime")).
-                    format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            String vacancyDate = date.child(0).attr("datetime");
+            LocalDateTime formatedDate = new HabrCareerParse().parse(vacancyDate);
             String link = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
-            System.out.printf("%s %s %s%n", vacancyName, dateTime, link);
+            System.out.printf("%s %s %s%n", vacancyName, formatedDate, link);
         });
+    }
+
+    @Override
+    public LocalDateTime parse(String parse) {
+        return OffsetDateTime.parse(parse, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime();
     }
 }
