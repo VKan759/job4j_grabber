@@ -17,7 +17,7 @@ public class HabrCareerParse implements DateTimeParser {
     private static final String SOURCE_LINK = "https://career.habr.com";
     public static final String PREFIX = "/vacancies?page=";
     public static final String SUFFIX = "&q=Java%20developer&type=all";
-    private static final int PAGE_COUNT = 1;
+    private static final int PAGE_COUNT = 5;
 
     public static void main(String[] args) throws IOException {
         HabrCareerParse habrCareerParse = new HabrCareerParse();
