@@ -8,13 +8,10 @@ import org.jsoup.select.Elements;
 import ru.job4j.grabber.utils.DateTimeParser;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HabrCareerParse implements DateTimeParser, Parse {
+public class HabrCareerParse implements Parse {
 
     private static final String SOURCE_LINK = "https://career.habr.com";
     public static final String PREFIX = "/vacancies?page=";
@@ -27,12 +24,7 @@ public class HabrCareerParse implements DateTimeParser, Parse {
     }
 
     public static void main(String[] args) throws IOException {
-        DateTimeParser parser = new DateTimeParser() {
-            @Override
-            public LocalDateTime parse(String parse) {
-                return OffsetDateTime.parse(parse, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime();
-            }
-        };
+        DateTimeParser parser = new DateTimeParseUser();
         HabrCareerParse habrCareerParse = new HabrCareerParse(parser);
         List<Post> list = habrCareerParse.list("https://career.habr.com");
         System.out.println(list);
@@ -52,10 +44,6 @@ public class HabrCareerParse implements DateTimeParser, Parse {
         return description.toString().trim();
     }
 
-    @Override
-    public LocalDateTime parse(String parse) {
-        return OffsetDateTime.parse(parse, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime();
-    }
 
     @Override
     public List<Post> list(String link) throws IOException {
