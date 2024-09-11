@@ -10,3 +10,4 @@
 5. Non Blocking Algorithm
 6. Пулы
 7. NIO и многопоточность
+8. Создание ветки из IDEA
